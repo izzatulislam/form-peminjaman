@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Form Peminjaman Mobil</title>
+</head>
+<body>
+  <h2>Form Peminjaman Mobil</h2>
+  <form id="bookingForm">
+    Nama: <input type="text" id="nama" required><br><br>
+    Tanggal: <input type="date" id="tanggal" required><br><br>
+    <button type="submit">Kirim</button>
+  </form>
+  <p id="response"></p>
+
+  <script>
+    const scriptURL = "https://script.google.com/macros/s/AKfycbwlMV9k0gFLYvwgKkqG6imcs4-sB11y3vE5sInA2mpTOKF7piZ8tG70MJqkW3EJAw4L/exec";
+
+    document.getElementById("bookingForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      const nama = document.getElementById("nama").value;
+      const tanggal = document.getElementById("tanggal").value;
+
+      fetch(scriptURL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nama, tanggal })
+      })
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById("response").innerText = data.message;
+      })
+      .catch(err => {
+        document.getElementById("response").innerText = "❌ Gagal mengirim data!";
+        console.error(err);
+      });
+    });
+  </script>
+</body>
+</html>
